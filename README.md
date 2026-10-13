@@ -41,8 +41,53 @@ It installs under `~/.local/share/translation-desk`, adds `~/.local/bin/translat
 - `Enter`: paste the selected translation.
 - `Shift+Enter`: insert a newline.
 - `Tab` / `Shift+Tab`: switch enabled targets.
-- `Ctrl+1`, `Ctrl+2`, `Ctrl+3`: select English, Japanese, or Korean.
+- `Ctrl+1`, `Ctrl+2`, `Ctrl+3`: select and paste English, Japanese, or Korean when its current translation is ready.
 - `Esc`: close without modifying the target application.
+
+## Basic tests
+
+Run the full automated suite from the repository root:
+
+```bash
+QT_QPA_PLATFORM=offscreen python3 -m pytest -q
+```
+
+The suite covers provider parsing and fallback behavior, Chinese/English source modes, target-language selection, stale-result protection, IME preedit handling, keyboard shortcuts, X11 paste safety, the 25% glass token, and user-local installer backups.
+
+For a safe live check that does not paste into another application:
+
+```bash
+PYTHONPATH=src python3 -m quick_translate.app --preview
+```
+
+The preview disables the global shortcut and automatic paste. `Esc` or the close button hides its window; choose `Quit` from its tray menu to stop the preview process.
+
+## Manual acceptance checklist
+
+1. Press `Ctrl+Alt+Z` and confirm the floating glass window opens.
+2. Enter a Chinese paragraph and check that the enabled target rows update independently.
+3. Choose `English` as the source mode, enter an English sentence, and verify the targets update.
+4. Toggle a target language off and confirm its row disappears; use `Add language` to enable another target.
+5. Select a target and press `Enter` in a scratch editor to verify paste.
+6. Press `Esc` and confirm the target editor is unchanged.
+
+## Troubleshooting
+
+- **Shortcut does nothing:** confirm the session is X11 (`echo $XDG_SESSION_TYPE`), and make sure an older Quick Translate process is not also running. The installer does not stop unrelated legacy instances.
+- **The window is translucent but not blurred:** enable the desktop compositor's blur effect. The application requests KDE blur for its own window but does not change global compositor settings.
+- **Chinese input is incomplete:** wait for the IME candidate composition to finish before pressing `Enter`; composing `Enter`, `Tab`, and arrow keys are intentionally left to the input method/editor.
+- **Translation unavailable:** the free endpoints may throttle requests or be temporarily unavailable. Retry later; the app will not paste an invalid or stale result.
+- **Terminal paste is blocked:** multiline terminal paste is intentionally clipboard-only to prevent translated text from executing as commands. Paste manually after reviewing it.
+
+## Rollback and uninstall
+
+Every installer run creates a backup under `~/.local/share/translation-desk-backups/`. To remove the installed application without touching the repository:
+
+```bash
+rm -rf ~/.local/share/translation-desk ~/.local/bin/translation-desk ~/.config/autostart/translation-desk.desktop ~/.local/share/applications/translation-desk.desktop
+```
+
+Restore the previous installation by copying the desired backup directory back to the paths listed above. Do not delete the backup until the replacement has been verified.
 
 ## Network and privacy
 
