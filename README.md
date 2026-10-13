@@ -81,7 +81,7 @@ The preview disables the global shortcut and automatic paste. `Esc` or the close
 
 ## Rollback and uninstall
 
-Every installer run creates a backup under `~/.local/share/translation-desk-backups/`. To remove the installed application without touching the repository:
+Every installer run creates a backup under `~/.local/share/translation-desk-backups/`. First choose `Quit` from the tray menu. To remove the installed application without touching the repository:
 
 ```bash
 rm -rf ~/.local/share/translation-desk ~/.local/bin/translation-desk ~/.config/autostart/translation-desk.desktop ~/.local/share/applications/translation-desk.desktop
