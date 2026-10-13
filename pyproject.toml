@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "translation-desk"
+version = "0.1.0"
+description = "A free desktop translation desk with liquid-glass UI and automatic paste"
+requires-python = ">=3.10"
+dependencies = [
+  "PyQt6>=6.6",
+  "requests>=2.31",
+  "python-xlib>=0.33",
+  "pynput>=1.7",
+]
+
+[project.scripts]
+translation-desk = "quick_translate.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

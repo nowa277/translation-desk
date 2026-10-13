@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Translation Desk
+Comment=Live translation with selectable targets and automatic paste
+Exec=translation-desk
+Icon=application-icon.webp
+Terminal=false
+Categories=Utility;Translation;
+StartupNotify=false
+X-GNOME-Autostart-enabled=true
